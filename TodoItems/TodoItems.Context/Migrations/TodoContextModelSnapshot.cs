@@ -18,7 +18,7 @@ namespace TodoItems.Context.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TodoItems.API.Models.TodoItem", b =>
+            modelBuilder.Entity("TodoItems.Models.Entities.TodoItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -29,9 +29,6 @@ namespace TodoItems.Context.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Secret")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

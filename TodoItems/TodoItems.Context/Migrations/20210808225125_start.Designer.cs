@@ -6,11 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TodoItems.Context.Context;
 
-namespace TodoItems.API.Migrations
+namespace TodoItems.Context.Migrations
 {
     [DbContext(typeof(TodoContext))]
-    [Migration("20210802150656_AddedSecret")]
-    partial class AddedSecret
+    [Migration("20210808225125_start")]
+    partial class start
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,7 +20,7 @@ namespace TodoItems.API.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TodoItems.API.Models.TodoItem", b =>
+            modelBuilder.Entity("TodoItems.Models.Entities.TodoItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,9 +31,6 @@ namespace TodoItems.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Secret")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
