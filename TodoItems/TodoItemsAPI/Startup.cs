@@ -5,9 +5,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using TodoItemsAPI.Models;
+using TodoItems.Context.Context;
+using System;
+using TodoItems.Service.TodoItemService;
 
-namespace TodoItemsAPI
+namespace TodoItems.API
 {
     public class Startup
     {
@@ -17,32 +19,42 @@ namespace TodoItemsAPI
         }
 
         public IConfiguration Configuration { get; }
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
-            services.AddDbContext<TodoContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<TodoContext>();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoItemsAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoItems.API", Version = "v1" });
             });
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            AddTransients(services);
+            //services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        private void AddTransients(IServiceCollection services)
+        {
+            services.AddTransient<ITodoItemService, TodoItemService>();
+        }
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoItemsAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoItems.API v1"));
 
             }
-
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                context.Response.Headers.Add("Cache-Control", "no-store, no-cache");
+                await next();
+            });
             app.UseHttpsRedirection();
 
             app.UseRouting();

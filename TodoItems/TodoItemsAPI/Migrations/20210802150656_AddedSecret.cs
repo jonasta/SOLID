@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace TodoItemsAPI.Migrations
+namespace TodoItems.API.Migrations
 {
     public partial class AddedSecret : Migration
     {

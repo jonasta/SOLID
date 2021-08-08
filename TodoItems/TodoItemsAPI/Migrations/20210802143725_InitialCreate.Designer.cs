@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TodoItemsAPI.Models;
+using TodoItems.Context.Context;
 
-namespace TodoItemsAPI.Migrations
+namespace TodoItems.API.Migrations
 {
     [DbContext(typeof(TodoContext))]
     [Migration("20210802143725_InitialCreate")]
@@ -20,7 +20,7 @@ namespace TodoItemsAPI.Migrations
                 .HasAnnotation("ProductVersion", "5.0.8")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("TodoItemsAPI.Models.TodoItem", b =>
+            modelBuilder.Entity("TodoItems.API.Models.TodoItem", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
