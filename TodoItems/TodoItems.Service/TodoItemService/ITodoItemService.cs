@@ -1,25 +1,20 @@
-﻿using System.Threading.Tasks;
-using TodoItems.Context.Context;
-using TodoItems.Models.Entities;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using TodoItems.Models.DTO;
-using System;
+using TodoItems.Models.Entities;
 
 namespace TodoItems.Service.TodoItemService
 {
     public interface ITodoItemService
     {
-
         ValueTask<List<TodoItem>> GetTodoItemsAsync();
 
         ValueTask<TodoItem> GetTodoItemAsync(long id);
 
-        ValueTask<bool> UpdateAsync(TodoItem todoItem, TodoItemDTO todoItemDTO);
+        ValueTask<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO);
 
-        ValueTask<bool> Insert(TodoItem todoItem);
+        ValueTask<int> Insert(TodoItemPostDTO todoItemPostDTO);
 
-        ValueTask<bool> Delete(TodoItem todoItem);
-
+        ValueTask<int> Delete(TodoItem todoItem);
     }
 }

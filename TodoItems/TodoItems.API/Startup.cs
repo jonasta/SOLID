@@ -8,6 +8,9 @@ using Microsoft.OpenApi.Models;
 using TodoItems.Context.Context;
 using System;
 using TodoItems.Service.TodoItemService;
+using FluentValidation;
+using TodoItems.Models.DTO;
+using TodoItems.Validation.TodoItem;
 
 namespace TodoItems.API
 {
@@ -19,9 +22,9 @@ namespace TodoItems.API
         }
 
         public IConfiguration Configuration { get; }
+
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddDbContext<TodoContext>();
 
@@ -30,12 +33,18 @@ namespace TodoItems.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoItems.API", Version = "v1" });
             });
             AddTransients(services);
+            AddValidators(services);
             //services.AddDatabaseDeveloperPageExceptionFilter();
         }
 
         private void AddTransients(IServiceCollection services)
         {
             services.AddTransient<ITodoItemService, TodoItemService>();
+        }
+
+        private void AddValidators(IServiceCollection services)
+        {
+            services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -45,7 +54,6 @@ namespace TodoItems.API
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoItems.API v1"));
-
             }
             app.Use(async (context, next) =>
             {

@@ -1,8 +1,8 @@
 ﻿using TodoItems.Models.Interfaces;
 
-namespace TodoItems.Models.Entities
+namespace TodoItems.Models.DTO
 {
-    public class TodoItem : ITodoItem
+    public class TodoItemPutDTO : ITodoItem
     {
         public long Id { get; set; }
         public string Name { get; set; }

@@ -1,14 +1,13 @@
-﻿using System.Threading.Tasks;
-using TodoItems.Context.Context;
-using TodoItems.Models.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using TodoItems.Context.Context;
 using TodoItems.Models.DTO;
-using System;
+using TodoItems.Models.Entities;
 
 namespace TodoItems.Service.TodoItemService
 {
-    public class TodoItemService: ITodoItemService
+    public class TodoItemService : ITodoItemService
     {
         private readonly TodoContext _context;
 
@@ -21,31 +20,30 @@ namespace TodoItems.Service.TodoItemService
         {
             return await _context.TodoItems.ToListAsync();
         }
+
         public async ValueTask<TodoItem> GetTodoItemAsync(long id)
         {
             return await _context.TodoItems.FindAsync(id);
         }
 
-        public async ValueTask<bool> UpdateAsync(TodoItem todoItem, TodoItemDTO todoItemDTO)
+        public async ValueTask<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO)
         {
-            todoItem.Name = todoItemDTO.Name;
-            todoItem.IsComplete = todoItemDTO.IsComplete;
-            await _context.SaveChangesAsync();
-            return true;
+            todoItem.Name = todoItemPutDTO.Name;
+            todoItem.IsComplete = todoItemPutDTO.IsComplete;
+            return await _context.SaveChangesAsync();
         }
 
-        public async ValueTask<bool> Insert(TodoItem todoItem)
+        public async ValueTask<int> Insert(TodoItemPostDTO todoItemPostDTO)
         {
+            var todoItem = new TodoItem { Name = todoItemPostDTO.Name, IsComplete = todoItemPostDTO.IsComplete };
             _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync();
         }
 
-        public async ValueTask<bool> Delete(TodoItem todoItem)
+        public async ValueTask<int> Delete(TodoItem todoItem)
         {
             _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
-            return true;
+            return await _context.SaveChangesAsync();
         }
     }
 }

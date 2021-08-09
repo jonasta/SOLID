@@ -17,6 +17,6 @@
     <ProjectReference Include="..\TodoItems.Context\TodoItems.Context.csproj" />
     <ProjectReference Include="..\TodoItems.Models\TodoItems.Models.csproj" />
     <ProjectReference Include="..\TodoItems.Service\TodoItems.Service.csproj" />
+    <ProjectReference Include="..\TodoItems.Validation\TodoItems.Validation.csproj" />
   </ItemGroup>
-
 </Project>
