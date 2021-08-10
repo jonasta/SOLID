@@ -14,13 +14,6 @@ namespace TodoItems.Test
     {
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureServices(services =>
-            {
-                services.AddControllers();
-                services.AddDbContext<TodoContext>();
-                services.AddTransient<ITodoItemService, TodoItemService>();
-                services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
-            });
         }
     }
 }

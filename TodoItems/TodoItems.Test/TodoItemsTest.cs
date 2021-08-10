@@ -35,8 +35,7 @@ namespace TodoItems.Test
         {
             var client = _factory.CreateClient();
             var res = await client.PostAsJsonAsync(API_URI, new TodoItemPostDTO { });
-            //var resObj = await res.Content.ReadFromJsonAsync<TodoItem>();
-            Assert.IsTrue(res.IsSuccessStatusCode);
+            Assert.IsTrue(!res.IsSuccessStatusCode);
         }
 
         [TestMethod]

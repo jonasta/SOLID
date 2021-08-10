@@ -3,9 +3,9 @@ using TodoItems.Models.DTO;
 
 namespace TodoItems.Validation.TodoItem
 {
-    public class TodoItemPostValidator : AbstractValidator<TodoItemPostDTO>
+    public class TodoItemPutValidator : AbstractValidator<TodoItemPutDTO>
     {
-        public TodoItemPostValidator()
+        public TodoItemPutValidator()
         {
             RuleFor(m => m)
                 .NotEmpty()
@@ -15,7 +15,6 @@ namespace TodoItems.Validation.TodoItem
             RuleFor(m => m.Name)
                 .NotEmpty()
                 .WithMessage("Nome Inválido");
-
         }
     }
 }

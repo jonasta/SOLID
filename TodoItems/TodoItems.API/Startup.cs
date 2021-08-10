@@ -11,6 +11,7 @@ using TodoItems.Service.TodoItemService;
 using FluentValidation;
 using TodoItems.Models.DTO;
 using TodoItems.Validation.TodoItem;
+using FluentValidation.AspNetCore;
 
 namespace TodoItems.API
 {
@@ -25,7 +26,7 @@ namespace TodoItems.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddFluentValidation();
             services.AddDbContext<TodoContext>();
 
             services.AddSwaggerGen(c =>
@@ -45,6 +46,7 @@ namespace TodoItems.API
         private void AddValidators(IServiceCollection services)
         {
             services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
+            services.AddTransient<IValidator<TodoItemPutDTO>, TodoItemPutValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
