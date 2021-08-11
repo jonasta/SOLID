@@ -350,8 +350,77 @@ public class SMSMessage : IMessage
 ```
 
 
+## Dependency Inversion Principle (DIP) 
+
+#### A. High-level modules should not depend on low-level modules. Both should depend on abstractions. B. Abstractions should not depend upon details. Details should not depend upon abstractions.”
+or  “Prefer to depend on abstraction over concretion”
+
+#### Code Smell (Bad Example)
+
+```cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        var processor = new GizmoProcessor();
+    }
+}
+ 
+public class GizmoProcessor
+{
+    public void Process()
+    {
+        // do something
+        var logger = new TextLogger();
+        logger.WriteLogMessage("Something happened");
+    }
+}
+ 
+public class TextLogger
+{
+    public void WriteLogMessage(string Message)
+    { }
+}
+```
 
 
+#### Possible Solution
+
+```cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        var processor = new GizmoProcessor(new TextLogger());
+    }
+}
+ 
+public class GizmoProcessor
+{
+    private readonly ILogger _logger;
+    public GizmoProcessor(ILogger logger)
+    {
+            _logger = logger;    
+    }
+ 
+    public void Process()
+    {
+        // do something
+        _logger.WriteLogMessage("Something happened");
+    }
+}
+ 
+public class TextLogger : ILogger
+{
+    public void WriteLogMessage(string Message)
+    { }
+}
+ 
+public interface ILogger
+{
+    void WriteLogMessage(string Message);
+}
+```
 
 
 > Credits
