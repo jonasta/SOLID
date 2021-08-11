@@ -2,13 +2,13 @@
 ## Single Responsibility Principle (SRP) 
 A class should do one thing and one thing only
 
-Bad Example
+#### Bad Example
 
 ```cs
 
 ```
 
-Solution
+#### Solution
   
 ```cs
 
@@ -19,7 +19,7 @@ Solution
 ## Open-Closed Principle (OCP)
 A class should be open to extension but closed to modification
 
-Bad Example
+#### Bad Example
 
 ```cs
   public class ErrorLogger
@@ -64,7 +64,7 @@ Bad Example
 }
 ```
 
-Solution
+#### Solution
 
 ```cs
 public interface IErrorLogger
@@ -109,13 +109,13 @@ Extension Techniques
 ## Liskov Substitution Principle (LSP)
 You should be able to replace a class with a subclass without the calling code knowing about the change
 
-Bad Example
+#### Bad Example
   
 ```cs
   
 ```  
   
-Solution
+#### Solution
   
 ```cs
 
