@@ -1,11 +1,5 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Extensions.DependencyInjection;
-using TodoItems.Context.Context;
-using TodoItems.Models.DTO;
-using TodoItems.Service.TodoItemService;
-using TodoItems.Validation.TodoItem;
 
 namespace TodoItems.Test
 {

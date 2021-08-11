@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using TodoItems.Models.DTO;
 
-namespace TodoItems.Validation.TodoItem
+namespace TodoItems.Validation.TodoItemValidator
 {
-    public class TodoItemPutValidator : AbstractValidator<TodoItemPutDTO>
+    public class TodoItemPostValidator : AbstractValidator<TodoItemPostDTO>
     {
-        public TodoItemPutValidator()
+        public TodoItemPostValidator()
         {
             RuleFor(m => m)
                 .NotEmpty()

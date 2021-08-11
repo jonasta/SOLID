@@ -16,31 +16,31 @@ namespace TodoItems.Service.TodoItemService
             _context = context;
         }
 
-        public async ValueTask<List<TodoItem>> GetTodoItemsAsync()
+        public async Task<List<TodoItem>> GetTodoItemsAsync()
         {
             return await _context.TodoItems.ToListAsync();
         }
 
-        public async ValueTask<TodoItem> GetTodoItemAsync(long id)
+        public async Task<TodoItem> GetTodoItemAsync(long id)
         {
             return await _context.TodoItems.FindAsync(id);
         }
 
-        public async ValueTask<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO)
+        public async Task<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO)
         {
             todoItem.Name = todoItemPutDTO.Name;
             todoItem.IsComplete = todoItemPutDTO.IsComplete;
             return await _context.SaveChangesAsync();
         }
 
-        public async ValueTask<int> Insert(TodoItemPostDTO todoItemPostDTO)
+        public async Task<int> Insert(TodoItemPostDTO todoItemPostDTO)
         {
             var todoItem = new TodoItem { Name = todoItemPostDTO.Name, IsComplete = todoItemPostDTO.IsComplete };
             _context.TodoItems.Add(todoItem);
             return await _context.SaveChangesAsync();
         }
 
-        public async ValueTask<int> Delete(TodoItem todoItem)
+        public async Task<int> Delete(TodoItem todoItem)
         {
             _context.TodoItems.Remove(todoItem);
             return await _context.SaveChangesAsync();

@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TodoItems.Models\TodoItems.Models.csproj" />
+    <ProjectReference Include="..\TodoItems.Service\TodoItems.Service.csproj" />
   </ItemGroup>
 
 </Project>

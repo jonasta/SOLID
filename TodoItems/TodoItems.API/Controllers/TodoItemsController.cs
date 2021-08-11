@@ -42,10 +42,6 @@ namespace TodoItems.API.Controllers
         public async Task<IActionResult> PutTodoItem(long id, TodoItemPutDTO todoItemDTO)
         {
             var todoItem = await _service.GetTodoItemAsync(id);
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
             try
             {
                 await _service.UpdateAsync(todoItem, todoItemDTO);

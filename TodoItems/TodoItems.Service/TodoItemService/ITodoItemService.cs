@@ -7,14 +7,14 @@ namespace TodoItems.Service.TodoItemService
 {
     public interface ITodoItemService
     {
-        ValueTask<List<TodoItem>> GetTodoItemsAsync();
+        Task<List<TodoItem>> GetTodoItemsAsync();
 
-        ValueTask<TodoItem> GetTodoItemAsync(long id);
+        Task<TodoItem> GetTodoItemAsync(long id);
 
-        ValueTask<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO);
+        Task<int> UpdateAsync(TodoItem todoItem, TodoItemPutDTO todoItemPutDTO);
 
-        ValueTask<int> Insert(TodoItemPostDTO todoItemPostDTO);
+        Task<int> Insert(TodoItemPostDTO todoItemPostDTO);
 
-        ValueTask<int> Delete(TodoItem todoItem);
+        Task<int> Delete(TodoItem todoItem);
     }
 }

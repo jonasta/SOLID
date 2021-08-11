@@ -10,8 +10,9 @@ using System;
 using TodoItems.Service.TodoItemService;
 using FluentValidation;
 using TodoItems.Models.DTO;
-using TodoItems.Validation.TodoItem;
+using TodoItems.Validation.TodoItemValidator;
 using FluentValidation.AspNetCore;
+using TodoItems.Validation.Service;
 
 namespace TodoItems.API
 {
@@ -45,6 +46,8 @@ namespace TodoItems.API
 
         private void AddValidators(IServiceCollection services)
         {
+            services.AddTransient<TodoItemValidatorService>();
+
             services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
             services.AddTransient<IValidator<TodoItemPutDTO>, TodoItemPutValidator>();
         }

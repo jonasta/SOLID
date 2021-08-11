@@ -47,6 +47,16 @@ namespace TodoItems.Test
         }
 
         [TestMethod]
+        public async Task UpdateFail()
+        {
+            var client = _factory.CreateClient();
+            var todo = (await client.GetFromJsonAsync<ICollection<TodoItem>>(API_URI)).Last();
+            todo.Id = long.MaxValue;
+            var res = await client.PutAsJsonAsync($"{API_URI}{todo.Id}", todo);
+            Assert.IsTrue(!res.IsSuccessStatusCode);
+        }
+
+        [TestMethod]
         public async Task Update()
         {
             var client = _factory.CreateClient();
