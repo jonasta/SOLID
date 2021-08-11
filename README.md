@@ -2,7 +2,7 @@
 ## Single Responsibility Principle (SRP) 
 A class should do one thing and one thing only
 
-#### Bad Example
+#### Code Smell (Bad Example)
 
 ```cs
 public class UserService  
@@ -70,7 +70,15 @@ public class EmailService
 ## Open-Closed Principle (OCP)
 A class should be open to extension but closed to modification
 
-#### Bad Example
+
+Extension Techniques
+* inheritance
+* interface inheritance
+* abstract methods (must override)
+* virtual method
+* extension method
+
+#### Code Smell (Bad Example)
 
 ```cs
   public class ErrorLogger
@@ -148,19 +156,10 @@ public class EventLogErrorLogger : IErrorLogger
 }
 ```
 
-
-
-Extension Techniques
-* inheritance
-* interface inheritance
-* abstract methods (must override)
-* virtual method
-* extension method
-
 ## Liskov Substitution Principle (LSP)
 You should be able to replace a class with a subclass without the calling code knowing about the change
 
-#### Bad Example
+#### Code Smell (Bad Example)
   
 ```cs
 public class SqlFile  
@@ -261,6 +260,102 @@ public class SqlFileManager
 } 
 ```
 
-credits
-https://www.dotnetcurry.com/software-gardening/1365/solid-principles
-https://www.c-sharpcorner.com/UploadFile/damubetha/solid-principles-in-C-Sharp/
+## The Interface Segregation Principle (ISP) 
+
+#### Interfaces should be small and should contain only those methods or properties that are effectively required
+or  “Clients should not be forced to depend on methods that they do not use.”
+
+#### Code Smell (Bad Example)
+
+```cs
+public interface IMessage
+{
+    IList<string> SendToAddress { get; set; }
+    string Subject { get; set; }
+    string MessageText { get; set; }
+    bool Send();
+}
+  
+public class EmailMessage : IMessage
+{
+    IList<string> SendToAddress { get; set; }
+    string Subject { get; set; }
+    string MessageText { get; set; }
+  
+    bool Send()
+    {
+        // Contact SMTP server and send message
+    }
+}
+
+public class SMSMessage : IMessage
+{
+    IList<string> SendToAddress { get; set; }
+    string MessageText { get; set; }
+    string Subject
+    {
+        get { throw new NotImplementedException(); }
+        set { throw new NotImplementedException(); }
+    }
+  
+    bool Send()
+    {
+        // Contact SMS server and send message
+    }
+}
+```
+#### Possible Solution
+
+```cs
+public interface IMessage
+{
+    IList<string> SendTo { get; set; }
+    string MessageText { get; set; }
+    bool Send();
+}
+  
+public interface IEmailMessage
+{
+    IList<string> CCTo { get; set; }
+    IList<string> BCCTo { get; set; }
+    IList<string> AttachementFilePaths { get; set; }
+    string Subject { get; set; }
+}
+  
+public class EmailMessage : IMessage, IEmailMessage
+{
+    IList<string> SendTo { get; set; }
+    IList<string> CCTo { get; set; }
+    IList<string> BCCTo { get; set; }
+    IList<string> AttachementFilePaths { get; set; }
+    string Subject { get; set; }
+    string MessageText { get; set; }
+     
+    bool Send()
+    {
+        // Contact SMTP server and send message
+    }
+}
+  
+public class SMSMessage : IMessage
+{
+    IList<string> SendTo { get; set; }
+    string MessageText { get; set; }
+  
+    bool Send()
+    {
+        // Contact SMS server and send message
+    }
+}
+```
+
+
+
+
+
+
+> Credits
+> 
+> https://www.dotnetcurry.com/software-gardening/1365/solid-principles
+> 
+> https://www.c-sharpcorner.com/UploadFile/damubetha/solid-principles-in-C-Sharp/
