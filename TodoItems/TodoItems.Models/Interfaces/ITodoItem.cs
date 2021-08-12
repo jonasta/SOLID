@@ -4,5 +4,6 @@
     {
         string Name { get; set; }
         bool IsComplete { get; set; }
+        long TodoListId { get; set; }
     }
 }

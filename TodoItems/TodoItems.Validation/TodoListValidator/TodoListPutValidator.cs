@@ -1,15 +1,15 @@
 ﻿using FluentValidation;
 using System.Threading;
 using TodoItems.Models.DTO;
-using TodoItems.Service.TodoItemValidatorService;
+using TodoItems.Service.TodoListValidatorService;
 
 namespace TodoItems.Validation.TodoItemValidator
 {
-    public class TodoItemPutValidator : AbstractValidator<TodoItemPutDTO>
+    public class TodoListPutValidator : AbstractValidator<TodoListPutDTO>
     {
-        private readonly ITodoItemValidatorService _service;
+        private readonly ITodoListValidatorService _service;
 
-        public TodoItemPutValidator(ITodoItemValidatorService service)
+        public TodoListPutValidator(ITodoListValidatorService service)
         {
             _service = service;
 

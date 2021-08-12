@@ -7,12 +7,15 @@ namespace TodoItems.Context.Context
     public class TodoContext : DbContext
     {
         private readonly IConfiguration _configuration;
+
         public TodoContext(DbContextOptions<TodoContext> options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
 
         public DbSet<TodoItem> TodoItems { get; set; }
+        public DbSet<TodoList> TodoLists { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -20,9 +23,11 @@ namespace TodoItems.Context.Context
                 optionsBuilder.UseSqlServer(_configuration.GetConnectionString("DefaultConnection"));
             }
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TodoItem>().ToTable("TodoItem");
+            modelBuilder.Entity<TodoList>().ToTable("TodoList");
         }
     }
 }
