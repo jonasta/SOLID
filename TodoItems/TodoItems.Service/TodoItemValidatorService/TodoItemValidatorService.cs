@@ -1,9 +1,8 @@
 ﻿using TodoItems.Context.Context;
 using TodoItems.Models.Entities;
 using TodoItems.Validation.Service;
-using TodoItems.Validation.Service.TodoItemValidator;
 
-namespace TodoItems.Validation.TodoItemValidator
+namespace TodoItems.Service.TodoItemValidatorService
 {
     public class TodoItemValidatorService : BaseValidatorService<TodoItem>, ITodoItemValidatorService
     {

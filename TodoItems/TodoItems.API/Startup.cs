@@ -1,18 +1,19 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TodoItems.Context.Context;
-using System;
-using TodoItems.Service.TodoItemService;
-using FluentValidation;
 using TodoItems.Models.DTO;
+using TodoItems.Service.TodoItemService;
+using TodoItems.Service.TodoItemValidatorService;
+using TodoItems.Service.TodoListService;
+using TodoItems.Service.TodoListValidatorService;
+using TodoItems.Validation;
 using TodoItems.Validation.TodoItemValidator;
-using FluentValidation.AspNetCore;
-using TodoItems.Validation.Service;
 
 namespace TodoItems.API
 {
@@ -42,14 +43,18 @@ namespace TodoItems.API
         private void AddTransients(IServiceCollection services)
         {
             services.AddTransient<ITodoItemService, TodoItemService>();
+            services.AddTransient<ITodoListService, TodoListService>();
         }
 
         private void AddValidators(IServiceCollection services)
         {
-            services.AddTransient<TodoItemValidatorService>();
-
+            services.AddTransient<ITodoItemValidatorService, TodoItemValidatorService>();
             services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
             services.AddTransient<IValidator<TodoItemPutDTO>, TodoItemPutValidator>();
+
+            services.AddTransient<ITodoListValidatorService, TodoListValidatorService>();
+            services.AddTransient<IValidator<TodoListPostDTO>, TodoListPostValidator>();
+            services.AddTransient<IValidator<TodoListPutDTO>, TodoListPutValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
