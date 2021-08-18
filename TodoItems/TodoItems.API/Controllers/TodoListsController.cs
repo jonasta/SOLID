@@ -20,27 +20,28 @@ namespace TodoItems.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<TodoListPutDTO>>> GetTodoLists()
+        public async Task<IActionResult> GetTodoLists()
         {
-            return Ok((await _service.GetTodoListsAsync()).Select(todoList => new TodoListPutDTO() { Name = todoList.Name, Id = todoList.Id }));
+            return Ok(await _service.GetTodoListsAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoListPutDTO>> GetTodoList(long id)
+        public async Task<IActionResult> GetTodoList(long id)
         {
             var todoList = await _service.GetTodoListAsync(id);
-            return todoList == null ? NotFound() : Ok(new TodoListPutDTO() { Name = todoList.Name, Id = todoList.Id });
+            if (todoList == null) return NotFound();
+            return Ok(todoList);
         }
 
         [HttpPost, ValidateModel]
-        public async Task<ActionResult<TodoListPostDTO>> PostTodoList(TodoListPostDTO todoListPostDTO)
+        public async Task<IActionResult> PostTodoList(TodoListPostDTO todoListPostDTO)
         {
             var newId = await _service.Insert(todoListPostDTO);
             return CreatedAtAction(nameof(GetTodoList), new { id = newId }, todoListPostDTO);
         }
 
         [HttpPut("{id}"), ValidateModel]
-        public async Task<IActionResult> PutTodoList(long id, TodoListPutDTO todoListDTO)
+        public async Task<IActionResult> PutTodoList(long id, TodoListDTO todoListDTO)
         {
             await _service.UpdateAsync(id, todoListDTO);
             return NoContent();
@@ -49,9 +50,9 @@ namespace TodoItems.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoList(long id)
         {
-            var TodoList = await _service.GetTodoListAsync(id);
-            if (TodoList == null) return NotFound();
-            await _service.Delete(TodoList);
+            var todoList = await _service.GetTodoListAsync(id);
+            if (todoList == null) return NotFound();
+            await _service.Delete(todoList.Id);
             return NoContent();
         }
     }

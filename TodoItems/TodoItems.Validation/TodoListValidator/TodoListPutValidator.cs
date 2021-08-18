@@ -5,7 +5,7 @@ using TodoItems.Service.TodoListValidatorService;
 
 namespace TodoItems.Validation.TodoItemValidator
 {
-    public class TodoListPutValidator : AbstractValidator<TodoListPutDTO>
+    public class TodoListPutValidator : AbstractValidator<TodoListDTO>
     {
         private readonly ITodoListValidatorService _service;
 

@@ -51,8 +51,8 @@ namespace TodoLists.Test
         public async Task UpdateFail()
         {
             var client = _factory.CreateClient();
-            var todo = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
-            var data = new TodoListPutDTO { Id = long.MaxValue, Name = todo.Name };
+            var todoList = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
+            var data = new TodoListDTO { Id = long.MaxValue, Name = todoList.Name };
             var res = await client.PutAsJsonAsync($"{API_URI}{data.Id}", data);
             Assert.IsTrue(!res.IsSuccessStatusCode);
         }
@@ -61,8 +61,8 @@ namespace TodoLists.Test
         public async Task Update()
         {
             var client = _factory.CreateClient();
-            var todo = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
-            var data = new TodoListPutDTO { Id = todo.Id, Name = todo.Name, };
+            var todoList = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
+            var data = new TodoListDTO { Id = todoList.Id, Name = todoList.Name, };
             data.Name = "List 2";
             var res = await client.PutAsJsonAsync($"{API_URI}{data.Id}", data);
             Assert.IsTrue(res.IsSuccessStatusCode);
@@ -72,8 +72,8 @@ namespace TodoLists.Test
         public async Task Delete()
         {
             var client = _factory.CreateClient();
-            var todo = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
-            var res = await client.DeleteAsync($"{API_URI}{todo.Id}");
+            var todoList = (await client.GetFromJsonAsync<ICollection<TodoList>>(API_URI)).Last();
+            var res = await client.DeleteAsync($"{API_URI}{todoList.Id}");
             Assert.IsTrue(res.IsSuccessStatusCode);
         }
     }

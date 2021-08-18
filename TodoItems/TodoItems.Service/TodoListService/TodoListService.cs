@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using TodoItems.Context.Context;
 using TodoItems.Models.DTO;
@@ -16,17 +17,19 @@ namespace TodoItems.Service.TodoListService
             _context = context;
         }
 
-        public async Task<List<TodoList>> GetTodoListsAsync()
+        public async Task<List<TodoListDTO>> GetTodoListsAsync()
         {
-            return await _context.TodoLists.ToListAsync();
+            return (await _context.TodoLists.ToListAsync())
+                .Select(todoList => new TodoListDTO() { Name = todoList.Name, Id = todoList.Id }).ToList();
         }
 
-        public async Task<TodoList> GetTodoListAsync(long id)
+        public async Task<TodoListDTO> GetTodoListAsync(long id)
         {
-            return await _context.TodoLists.FindAsync(id);
+            var todoList = await _context.TodoLists.FindAsync(id);
+            return todoList != null ? new TodoListDTO() { Name = todoList.Name, Id = todoList.Id } : null;
         }
 
-        public async Task<int> UpdateAsync(long id, TodoListPutDTO todoListPutDTO)
+        public async Task<int> UpdateAsync(long id, TodoListDTO todoListPutDTO)
         {
             var todoList = await _context.TodoLists.FindAsync(id);
             todoList.Name = todoListPutDTO.Name;
@@ -41,8 +44,9 @@ namespace TodoItems.Service.TodoListService
             return todoList.Id;
         }
 
-        public async Task<int> Delete(TodoList todoList)
+        public async Task<int> Delete(long id)
         {
+            var todoList = await _context.TodoLists.FindAsync(id);
             _context.TodoLists.Remove(todoList);
             return await _context.SaveChangesAsync();
         }

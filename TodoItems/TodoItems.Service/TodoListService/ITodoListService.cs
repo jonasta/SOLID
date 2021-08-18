@@ -7,14 +7,14 @@ namespace TodoItems.Service.TodoListService
 {
     public interface ITodoListService
     {
-        Task<List<TodoList>> GetTodoListsAsync();
+        Task<List<TodoListDTO>> GetTodoListsAsync();
 
-        Task<TodoList> GetTodoListAsync(long id);
+        Task<TodoListDTO> GetTodoListAsync(long id);
 
-        Task<int> UpdateAsync(long id, TodoListPutDTO TodoListPutDTO);
+        Task<int> UpdateAsync(long id, TodoListDTO todoListPutDTO);
 
-        Task<long> Insert(TodoListPostDTO TodoListPostDTO);
+        Task<long> Insert(TodoListPostDTO todoListPostDTO);
 
-        Task<int> Delete(TodoList TodoList);
+        Task<int> Delete(long id);
     }
 }

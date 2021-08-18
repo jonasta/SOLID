@@ -2,7 +2,7 @@
 
 namespace TodoItems.Models.DTO
 {
-    public class TodoItemPutDTO : ITodoItem
+    public class TodoItemDTO : ITodoItem
     {
         public long Id { get; set; }
         public string Name { get; set; }
