@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoItems.API.Attributes;
 using TodoItems.Models.DTO;
-using TodoItems.Models.Entities;
 using TodoItems.Service.TodoItemService;
 
 namespace TodoItems.API.Controllers
@@ -21,60 +18,48 @@ namespace TodoItems.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ICollection<TodoItem>>> GetTodoItems()
+        public async Task<IActionResult> GetTodoItems()
         {
             return Ok(await _service.GetTodoItemsAsync());
         }
 
-        [HttpGet("/api/TodoLists{listId}/TodoItems")]
-        public async Task<ActionResult<ICollection<TodoItem>>> GetTodoItemsByListId(long listId)
+        [HttpGet("/api/TodoLists({listId})/TodoItems")]
+        public async Task<IActionResult> GetTodoItemsByListId(long listId)
         {
-            return Ok(await _service.GetTodoItemsAsync());
+            return Ok(await _service.GetTodoItemsByListIdAsync(listId));
         }
 
-        [HttpGet("/api/TodoLists{listId}/TodoItems{todoItemId}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItemByListId(long todoListId, long todoItemId)
+        [HttpGet("/api/TodoLists({listId})/TodoItems({todoItemId})")]
+        public async Task<IActionResult> GetTodoItemByListId(long listId, long todoItemId)
         {
-            var todoItem = await _service.GetTodoItemAsync(todoItemId);
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
-
+            var todoItem = await _service.GetTodoItemByListIdAsync(listId, todoItemId);
+            if (todoItem == null) return NotFound();
             return Ok(todoItem);
         }
 
-        [HttpPost("/api/TodoLists{listId}/TodoItems"), ValidateModel]
-        public async Task<ActionResult<TodoItemPostDTO>> PostTodoItem(long todoListId, TodoItemPostDTO todoItemPostDTO)
+        [HttpPost("/api/TodoLists({listId})/TodoItems"), ValidateModel]
+        public async Task<IActionResult> PostTodoItem(long listId, TodoItemPostDTO todoItemPostDTO)
         {
-            await _service.Insert(todoItemPostDTO);
+            todoItemPostDTO.TodoListId = listId;
+            await _service.InsertAsync(todoItemPostDTO);
             return NoContent();
         }
 
-        [HttpPut("/api/TodoLists{listId}/TodoItems{todoItemId}")]
-        public async Task<IActionResult> PutTodoItem(long todoListId, long todoItemId, TodoItemPutDTO todoItemDTO)
+        [HttpPut("/api/TodoLists({listId})/TodoItems({todoItemId})")]
+        public async Task<IActionResult> PutTodoItem(long listId, long todoItemId, TodoItemDTO todoItemDTO)
         {
-            var todoItem = await _service.GetTodoItemAsync(todoItemId);
-            try
-            {
-                await _service.UpdateAsync(todoItem, todoItemDTO);
-            }
-            catch (DbUpdateConcurrencyException) when (_service.GetTodoItemAsync(todoItemId).Result == null)
-            {
-                return NotFound();
-            }
+            todoItemDTO.TodoListId = listId;
+            await _service.UpdateAsync(todoItemId, todoItemDTO);
             return NoContent();
         }
 
-        [HttpDelete("/api/TodoLists{listId}/TodoItems{todoItemId}")]
-        public async Task<IActionResult> DeleteTodoItem(long todoListId, long todoItemId)
+        [HttpDelete("/api/TodoLists({listId})/TodoItems({todoItemId})")]
+        public async Task<IActionResult> DeleteTodoItem(long listId, long todoItemId)
         {
-            var TodoItem = await _service.GetTodoItemAsync(todoItemId);
-            if (TodoItem == null)
-            {
-                return NotFound();
-            }
-            await _service.Delete(TodoItem);
+            var todoItem = await _service.GetTodoItemByListIdAsync(listId, todoItemId);
+            if (todoItem == null) return NotFound();
+
+            await _service.DeleteAsync(todoItem.Id);
             return NoContent();
         }
     }

@@ -1,3 +1,4 @@
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using TodoItems.Context.Context;
+using TodoItems.Models.AutoMapperProfiles;
 using TodoItems.Models.DTO;
 using TodoItems.Service.TodoItemService;
 using TodoItems.Service.TodoItemValidatorService;
@@ -28,9 +30,12 @@ namespace TodoItems.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddFluentValidation();
             services.AddDbContext<TodoContext>();
 
+            services.AddAutoMapper(typeof(TodoItemProfile), typeof(TodoListProfile));
+            
+
+            services.AddControllers().AddFluentValidation();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TodoItems.API", Version = "v1" });
@@ -50,11 +55,11 @@ namespace TodoItems.API
         {
             services.AddTransient<ITodoItemValidatorService, TodoItemValidatorService>();
             services.AddTransient<IValidator<TodoItemPostDTO>, TodoItemPostValidator>();
-            services.AddTransient<IValidator<TodoItemPutDTO>, TodoItemPutValidator>();
+            services.AddTransient<IValidator<TodoItemDTO>, TodoItemPutValidator>();
 
             services.AddTransient<ITodoListValidatorService, TodoListValidatorService>();
             services.AddTransient<IValidator<TodoListPostDTO>, TodoListPostValidator>();
-            services.AddTransient<IValidator<TodoListPutDTO>, TodoListPutValidator>();
+            services.AddTransient<IValidator<TodoListDTO>, TodoListPutValidator>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

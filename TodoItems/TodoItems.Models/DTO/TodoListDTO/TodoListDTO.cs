@@ -4,7 +4,7 @@ using TodoItems.Models.Interfaces;
 
 namespace TodoItems.Models.DTO
 {
-    public class TodoListPutDTO : ITodoList
+    public class TodoListDTO : ITodoList
     {
         public long Id { get; set; }
         public string Name { get; set; }
