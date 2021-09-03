@@ -45,16 +45,16 @@ namespace TodoItems.Service.TodoItemService
         public async Task<int> UpdateAsync(long id, TodoItemDTO todoItemDTO)
         {
             var todoItem = await _context.TodoItems.FindAsync(id);
-            todoItem = _mapper.Map<TodoItem>(todoItemDTO);
-            todoItem.Id = id;
+            _mapper.Map(todoItemDTO, todoItem);
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<int> InsertAsync(TodoItemPostDTO todoItemDTO)
+        public async Task<TodoItem> InsertAsync(TodoItemPostDTO todoItemDTO)
         {
             var todoItem = _mapper.Map<TodoItem>(todoItemDTO);
             _context.TodoItems.Add(todoItem);
-            return await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
+            return todoItem;
         }
 
         public async Task<int> DeleteAsync(long id)

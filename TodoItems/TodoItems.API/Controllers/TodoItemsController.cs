@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using TodoItems.API.Attributes;
 using TodoItems.Models.DTO;
 using TodoItems.Service.TodoItemService;
 
@@ -33,22 +32,20 @@ namespace TodoItems.API.Controllers
         public async Task<IActionResult> GetTodoItemByListId(long listId, long todoItemId)
         {
             var todoItem = await _service.GetTodoItemByListIdAsync(listId, todoItemId);
-            if (todoItem == null) return NotFound();
             return Ok(todoItem);
         }
 
-        [HttpPost("/api/TodoLists({listId})/TodoItems"), ValidateModel]
+        [HttpPost("/api/TodoLists({listId})/TodoItems")]
         public async Task<IActionResult> PostTodoItem(long listId, TodoItemPostDTO todoItemPostDTO)
         {
             todoItemPostDTO.TodoListId = listId;
-            await _service.InsertAsync(todoItemPostDTO);
-            return NoContent();
+            var todoItem = await _service.InsertAsync(todoItemPostDTO);
+            return CreatedAtAction(nameof(GetTodoItemByListId), new { listId = todoItem.TodoListId, todoItemId = todoItem.Id }, todoItemPostDTO);
         }
 
         [HttpPut("/api/TodoLists({listId})/TodoItems({todoItemId})")]
         public async Task<IActionResult> PutTodoItem(long listId, long todoItemId, TodoItemDTO todoItemDTO)
         {
-            todoItemDTO.TodoListId = listId;
             await _service.UpdateAsync(todoItemId, todoItemDTO);
             return NoContent();
         }

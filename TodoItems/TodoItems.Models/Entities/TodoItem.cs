@@ -2,7 +2,7 @@
 
 namespace TodoItems.Models.Entities
 {
-    public class TodoItem : ITodoItem
+    public class TodoItem : ITodoItem, IBaseEntity
     {
         public long Id { get; set; }
         public string Name { get; set; }

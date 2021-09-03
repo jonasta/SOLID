@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -11,11 +10,9 @@ using TodoItems.Context.Context;
 using TodoItems.Models.AutoMapperProfiles;
 using TodoItems.Models.DTO;
 using TodoItems.Service.TodoItemService;
-using TodoItems.Service.TodoItemValidatorService;
 using TodoItems.Service.TodoListService;
-using TodoItems.Service.TodoListValidatorService;
+using TodoItems.Service.Validation;
 using TodoItems.Validation;
-using TodoItems.Validation.TodoItemValidator;
 
 namespace TodoItems.API
 {
@@ -33,7 +30,6 @@ namespace TodoItems.API
             services.AddDbContext<TodoContext>();
 
             services.AddAutoMapper(typeof(TodoItemProfile), typeof(TodoListProfile));
-            
 
             services.AddControllers().AddFluentValidation();
             services.AddSwaggerGen(c =>

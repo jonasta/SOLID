@@ -36,15 +36,15 @@ namespace TodoItems.Service.TodoListService
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<long> Insert(TodoListPostDTO todoListPostDTO)
+        public async Task<TodoList> InsertAsync(TodoListPostDTO todoListPostDTO)
         {
             var todoList = new TodoList { Name = todoListPostDTO.Name };
             _context.TodoLists.Add(todoList);
             await _context.SaveChangesAsync();
-            return todoList.Id;
+            return todoList;
         }
 
-        public async Task<int> Delete(long id)
+        public async Task<int> DeleteAsync(long id)
         {
             var todoList = await _context.TodoLists.FindAsync(id);
             _context.TodoLists.Remove(todoList);

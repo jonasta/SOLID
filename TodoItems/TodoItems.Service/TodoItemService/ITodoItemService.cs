@@ -15,7 +15,7 @@ namespace TodoItems.Service.TodoItemService
 
         Task<int> UpdateAsync(long id, TodoItemDTO todoItemPutDTO);
 
-        Task<int> InsertAsync(TodoItemPostDTO todoItemPostDTO);
+        Task<TodoItem> InsertAsync(TodoItemPostDTO todoItemPostDTO);
 
         Task<int> DeleteAsync(long id);
     }

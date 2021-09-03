@@ -3,7 +3,7 @@ using TodoItems.Models.Interfaces;
 
 namespace TodoItems.Models.Entities
 {
-    public class TodoList : ITodoList
+    public class TodoList : ITodoList, IBaseEntity
     {
         public long Id { get; set; }
         public string Name { get; set; }

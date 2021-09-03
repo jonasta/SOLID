@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using TodoItems.API.Attributes;
 using TodoItems.Models.DTO;
 using TodoItems.Service.TodoListService;
-using System.Linq;
 
 namespace TodoItems.API.Controllers
 {
@@ -25,34 +22,36 @@ namespace TodoItems.API.Controllers
             return Ok(await _service.GetTodoListsAsync());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/api/TodoList({id})")]
         public async Task<IActionResult> GetTodoList(long id)
         {
             var todoList = await _service.GetTodoListAsync(id);
-            if (todoList == null) return NotFound();
-            return Ok(todoList);
+            if (todoList is null)
+                return NotFound();
+            else
+                return Ok(todoList);
         }
 
-        [HttpPost, ValidateModel]
+        [HttpPost("/api/TodoList")]
         public async Task<IActionResult> PostTodoList(TodoListPostDTO todoListPostDTO)
         {
-            var newId = await _service.Insert(todoListPostDTO);
-            return CreatedAtAction(nameof(GetTodoList), new { id = newId }, todoListPostDTO);
+            var todoItem = await _service.InsertAsync(todoListPostDTO);
+            return CreatedAtAction(nameof(GetTodoList), new { id = todoItem.Id }, todoListPostDTO);
         }
 
-        [HttpPut("{id}"), ValidateModel]
+        [HttpPut("/api/TodoList({id})")]
         public async Task<IActionResult> PutTodoList(long id, TodoListDTO todoListDTO)
         {
             await _service.UpdateAsync(id, todoListDTO);
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("/api/TodoList({id})")]
         public async Task<IActionResult> DeleteTodoList(long id)
         {
             var todoList = await _service.GetTodoListAsync(id);
             if (todoList == null) return NotFound();
-            await _service.Delete(todoList.Id);
+            await _service.DeleteAsync(todoList.Id);
             return NoContent();
         }
     }

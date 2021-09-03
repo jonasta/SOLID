@@ -10,11 +10,11 @@ namespace TodoItems.Validation
             RuleFor(m => m)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Modelo Inválido");
+                .WithMessage("Invalid Data");
 
             RuleFor(m => m.Name)
                 .NotEmpty()
-                .WithMessage("Nome Inválido");
+                .WithMessage("Invalid Name");
         }
     }
 }

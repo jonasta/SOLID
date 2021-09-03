@@ -1,20 +1,29 @@
 ﻿using FluentValidation;
+using System.Threading;
 using TodoItems.Models.DTO;
+using TodoItems.Service.Validation;
 
-namespace TodoItems.Validation.TodoItemValidator
+namespace TodoItems.Validation
 {
     public class TodoItemPostValidator : AbstractValidator<TodoItemPostDTO>
     {
-        public TodoItemPostValidator()
+        private readonly ITodoListValidatorService _listService;
+
+        public TodoItemPostValidator(ITodoListValidatorService listService)
         {
+            _listService = listService;
             RuleFor(m => m)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Modelo Inválido");
+                .WithMessage("Data is empty");
 
             RuleFor(m => m.Name)
                 .NotEmpty()
-                .WithMessage("Nome Inválido");
+                .WithMessage("Invalid Name");
+
+            RuleFor(m => m.TodoListId)
+                    .MustAsync(async (long id, CancellationToken cancellationToken) => await _listService.VerifyIfExistsAsync(id, cancellationToken))
+                    .WithMessage("List not found");
         }
     }
 }

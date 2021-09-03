@@ -51,7 +51,17 @@ namespace TodoItems.Test
             var client = _factory.CreateClient();
             var data = _mapper.Map<TodoItemPostDTO>(_todoItem);
             var res = await client.PostAsJsonAsync($"/api/TodoLists({data.TodoListId})/TodoItems", new TodoItemPostDTO { });
-            Assert.IsTrue(!res.IsSuccessStatusCode);
+            Assert.IsTrue(res.IsSuccessStatusCode.ToString() is "400");
+        }
+
+        [TestMethod]
+        public async Task InsertNonExistingList()
+        {
+            var client = _factory.CreateClient();
+            var data = _mapper.Map<TodoItemPostDTO>(_todoItem);
+            data.TodoListId = long.MaxValue;
+            var res = await client.PostAsJsonAsync($"/api/TodoLists({data.TodoListId})/TodoItems", data);
+            Assert.IsTrue(res.StatusCode.ToString() is "400");
         }
 
         [TestMethod]
@@ -69,7 +79,7 @@ namespace TodoItems.Test
             var todoItem = (await client.GetFromJsonAsync<ICollection<TodoItemDTO>>($"/api/TodoLists({_todoItem.TodoListId})/TodoItems")).Last();
             todoItem.Id = long.MaxValue;
             var res = await client.PutAsJsonAsync($"/api/TodoLists({todoItem.TodoListId})/TodoItems({todoItem.Id})", todoItem);
-            Assert.IsTrue(!res.IsSuccessStatusCode);
+            Assert.IsTrue(res.StatusCode.ToString() is "400");
         }
 
         [TestMethod]

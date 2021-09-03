@@ -13,8 +13,8 @@ namespace TodoItems.Service.TodoListService
 
         Task<int> UpdateAsync(long id, TodoListDTO todoListPutDTO);
 
-        Task<long> Insert(TodoListPostDTO todoListPostDTO);
+        Task<TodoList> InsertAsync(TodoListPostDTO todoListPostDTO);
 
-        Task<int> Delete(long id);
+        Task<int> DeleteAsync(long id);
     }
 }

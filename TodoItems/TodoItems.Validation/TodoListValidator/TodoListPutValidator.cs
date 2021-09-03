@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using System.Threading;
 using TodoItems.Models.DTO;
-using TodoItems.Service.TodoListValidatorService;
+using TodoItems.Service.Validation;
 
-namespace TodoItems.Validation.TodoItemValidator
+namespace TodoItems.Validation
 {
     public class TodoListPutValidator : AbstractValidator<TodoListDTO>
     {
@@ -16,15 +16,15 @@ namespace TodoItems.Validation.TodoItemValidator
             RuleFor(m => m)
                 .NotEmpty()
                 .NotNull()
-                .WithMessage("Dados enviados Inválidos");
+                .WithMessage("Data is empty");
 
             RuleFor(m => m.Id)
-                .MustAsync(async (long id, CancellationToken cancellationToken) => await _service.VerifyIfExists(id, cancellationToken))
-                .WithMessage("Registro não existe para ser modificado");
+                .MustAsync(async (long id, CancellationToken cancellationToken) => await _service.VerifyIfExistsAsync(id, cancellationToken))
+                .WithMessage("Item not found");
 
             RuleFor(m => m.Name)
                 .NotEmpty()
-                .WithMessage("Nome Inválido");
+                .WithMessage("Invalid Name");
         }
     }
 }

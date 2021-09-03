@@ -36,7 +36,7 @@ namespace TodoLists.Test
         {
             var client = _factory.CreateClient();
             var res = await client.PostAsJsonAsync(API_URI, new TodoListPostDTO { });
-            Assert.IsTrue(!res.IsSuccessStatusCode);
+            Assert.IsTrue(res.StatusCode.ToString() is "400");
         }
 
         [TestMethod]

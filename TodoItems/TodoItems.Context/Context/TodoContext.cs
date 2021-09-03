@@ -13,7 +13,6 @@ namespace TodoItems.Context.Context
             _configuration = configuration;
         }
 
-
         public DbSet<TodoItem> TodoItems { get; set; }
         public DbSet<TodoList> TodoLists { get; set; }
 
